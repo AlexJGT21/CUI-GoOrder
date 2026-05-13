@@ -7,24 +7,18 @@ import java.util.List;
 
 /**
  *
- * @author
+ * @author 
  */
-
-/**
- * Este es un producto que tiene "solo metodos"
- */
-
-public interface IProductoDAO {
+public interface IPersistenciaFachada {
     
-    //-----------------------------------
+    //Producto
     public abstract Producto crearProducto(Producto producto) throws PersistenciaException;
     public abstract Producto actualizarProducto(Producto producto) throws PersistenciaException;
     public abstract Producto eliminarProducto(Producto producto) throws PersistenciaException;
     public abstract List<Producto> obtenerProducto(Producto producto) throws PersistenciaException;
-    //-----------------------------------
     
-    public abstract List<Producto> buscarProducto(String nombreProducto) throws PersistenciaException;
-    
-    public abstract List<Producto> listarProductos() throws PersistenciaException;
+    //Inventario
+    public abstract List<Producto> obtenerListaProductos() throws PersistenciaException;
+    public abstract List<Producto> listarProductosFiltros(String nombre, Integer cantidad) throws PersistenciaException;
     
 }

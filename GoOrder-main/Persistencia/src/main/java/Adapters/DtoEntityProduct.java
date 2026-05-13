@@ -1,7 +1,7 @@
 
 package Adapters;
 
-import Entitys.Producto;
+import Entidades.Producto;
 import GoOrderDTO.ProductoDTO;
 
 /**
@@ -27,7 +27,7 @@ public class DtoEntityProduct {
      * @param producto Parametro de conversion
      * @return Una DTO
      */
-    public static ProductoDTO toDTO(Producto producto){
+    public static ProductoDTO toDTO(ProductoDTO producto){
         if (producto == null) {
             return null;
         }

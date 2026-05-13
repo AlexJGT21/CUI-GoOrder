@@ -1,7 +1,6 @@
 
 package Entidades;
 
-import Enumeradores.Disponibilidad;
 
 /**
  *
@@ -9,45 +8,66 @@ import Enumeradores.Disponibilidad;
  */
 public class Producto {
     
-    private Long id;
+    private String id;
     private String nombre;
     private String descripcion;
     private Double precio;
-    private Disponibilidad disponibilidad;
+    private Integer cantidad;
+    //IMAGENES
     private String imagen;
+    private byte[] imagenP;
 
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String descripcion, Double precio, Disponibilidad disponibilidad, String imagen) {
+    /**
+     * Constructor con atributo de imagen String
+     * @param id
+     * @param nombre
+     * @param descripcion
+     * @param precio
+     * @param cantidad
+     * @param imagen 
+     */
+    public Producto(String id, String nombre, String descripcion, Double precio, Integer cantidad, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
-        this.disponibilidad = disponibilidad;
+        this.cantidad = cantidad;
         this.imagen = imagen;
     }
 
-    public Producto(String nombre, String descripcion, Double precio) {
+    /**
+     * Constructor con atributo de imagen byte[]
+     * @param id
+     * @param nombre
+     * @param descripcion
+     * @param precio
+     * @param cantidad
+     * @param imagenP 
+     */
+    public Producto(String id, String nombre, String descripcion, Double precio, Integer cantidad, byte[] imagenP) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
-    }      
-
-    public Producto(String nombre, Double precio) {
-        this.nombre = nombre;
-        this.precio = precio;
+        this.cantidad = cantidad;
+        this.imagenP = imagenP;
     }
 
-    public Producto(String nombre) {
+    public Producto(String nombre, String descripcion, Double precio, String imagen) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.imagen = imagen;
     }        
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -75,12 +95,12 @@ public class Producto {
         this.precio = precio;
     }
 
-    public Disponibilidad getDisponibilidad() {
-        return disponibilidad;
+    public Integer getCantidad() {
+        return cantidad;
     }
 
-    public void setDisponibilidad(Disponibilidad disponibilidad) {
-        this.disponibilidad = disponibilidad;
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
     public String getImagen() {
@@ -91,8 +111,16 @@ public class Producto {
         this.imagen = imagen;
     }
 
+    public byte[] getImagenP() {
+        return imagenP;
+    }
+
+    public void setImagenP(byte[] imagenP) {
+        this.imagenP = imagenP;
+    }
+
     @Override
     public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", disponibilidad=" + disponibilidad + ", imagen=" + imagen + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", cantidad=" + cantidad + ", imagen=" + imagen + ", imagenP=" + imagenP + '}';
     }
 }

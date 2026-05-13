@@ -169,4 +169,13 @@ public class Control {
     public void mostrarDescripcionProducto(ProductoDTO productoSeleccionado){
         mostrarPantallas(new DescripcionProductoFORM(this, productoSeleccionado));
     }
+    
+    //----------------------------------------------------------------------------------
+    
+    public void mostrarGestionProductosFORM(){
+        mostrarPantallas(new GestionProductosFORM(this));
+    }    
+    public void mostrarInventarioFORM(){
+        mostrarPantallas(new InventarioProductosFORM(this));
+    }
 }

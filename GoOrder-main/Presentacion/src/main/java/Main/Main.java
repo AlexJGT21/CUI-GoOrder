@@ -11,7 +11,7 @@ import Interfaces.IProductoDAO;
 import Interfaces.IServicioBanco;
 import goorderpersistencia.CarritoDAO;
 import goorderpersistencia.DescuentosDAO;
-import goorderpersistencia.ProductoDAO;
+import goorderpersistencia.ProductosMemoriaDAO;
 import org.example.CarritoBO;
 import org.example.ConectorBanco;
 import org.example.DescuentosBO;
@@ -26,7 +26,7 @@ import org.itson.realizarpedidocue.RealizarPedidoCUE;
 
 public class Main {    
     public static void main(String[] args) {
-        IProductoDAO productoDAO = new ProductoDAO();
+        IProductoDAO productoDAO = new ProductosMemoriaDAO();
         IProductoBO productoBO = new ProductoBO(productoDAO);
         IDescuentosDAO descuentosDAO = new DescuentosDAO();
         IDescuentosBO descuentosBO = new DescuentosBO(descuentosDAO);
@@ -36,6 +36,6 @@ public class Main {
         
         IRealizarPedidoCUE realizarPedido = new RealizarPedidoCUE(productoBO,carritoBO,bancoService);
         Control control = new Control(realizarPedido);
-        control.mostrarInicio();
+        control.mostrarGestionProductosFORM();
     }    
 }

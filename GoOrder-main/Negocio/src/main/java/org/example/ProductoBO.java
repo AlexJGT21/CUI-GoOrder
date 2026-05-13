@@ -2,7 +2,7 @@
 package org.example;
 
 import Adapters.DtoEntityProduct;
-import Entitys.Producto;
+import Entidades.Producto;
 import GoOrderDTO.ProductoDTO;
 import Interfaces.IProductoBO;
 import Interfaces.IProductoDAO;
@@ -27,6 +27,7 @@ public class ProductoBO implements IProductoBO {
         try {
             List<Producto> listaEntity = productoDAO.buscarProducto(nombreProducto);
             List<ProductoDTO> listaDTo = new ArrayList<>();
+            
             for (Producto p: listaEntity) {
                 listaDTo.add(DtoEntityProduct.toDTO(p));
             }
@@ -49,5 +50,25 @@ public class ProductoBO implements IProductoBO {
         } catch (PersistenciaException e) {
             throw new NegocioException("No fue posible consultar productos.");
         }
+    }
+
+    @Override
+    public ProductoDTO crearProducto(ProductoDTO producto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ProductoDTO actualizarProducto(ProductoDTO producto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ProductoDTO eliminarProducto(ProductoDTO producto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<ProductoDTO> obtenerProducto(ProductoDTO producto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

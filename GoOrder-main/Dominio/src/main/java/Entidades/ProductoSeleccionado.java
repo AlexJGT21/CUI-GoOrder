@@ -16,13 +16,13 @@ public class ProductoSeleccionado {
     private Integer cantidad;
     private Double importe;
     private Double precioActual;
-    private Producto producto;
+    private ProductoDTO producto;
 
     public ProductoSeleccionado() {
     }
 
     
-    public ProductoSeleccionado(Integer id, Integer cantidad, Double importe, Double precioActual, Producto producto) {
+    public ProductoSeleccionado(Integer id, Integer cantidad, Double importe, Double precioActual, ProductoDTO producto) {
         this.id = id;
         this.cantidad = cantidad;
         this.importe = importe;
@@ -62,11 +62,11 @@ public class ProductoSeleccionado {
         this.precioActual = precioActual;
     }
 
-    public Producto getProducto() {
+    public ProductoDTO getProducto() {
         return producto;
     }
 
-    public void setProducto(Producto producto) {
+    public void setProducto(ProductoDTO producto) {
         this.producto = producto;
     }
     
