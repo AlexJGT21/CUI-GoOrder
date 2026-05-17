@@ -1,6 +1,10 @@
 
 package Control;
 
+import CUIInventario.InventarioProductosEntradaFORM;
+import CUIInventario.GestionProductosFORM;
+import CUIInventario.InventarioProductosSalidaFORM;
+import CUInterfaces.ICUInventario;
 import GUI.*;
 import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
@@ -23,12 +27,20 @@ public class Control {
     public final Color COLOR_INPUT = new Color(25, 25, 25);
     public final Color COLOR_BORDE = new Color(60, 60, 60);
     private final String rutaImagenes = "Resources/";
+    
+    //Casos de uso
     private IRealizarPedidoCUE realizarPedido;
+    private ICUInventario inventarioCU;    
+    
     List<ProductoDTO> listaProductos = new ArrayList<>();
 
     public Control(IRealizarPedidoCUE realizarPedido) {
         this.realizarPedido = realizarPedido;
         cargarMenuProductos();
+    }
+    
+    public Control(ICUInventario inventarioCU) {
+        this.inventarioCU = inventarioCU;
     }
 
     public ImageIcon obtenerImagen(String nombreImagen) {
@@ -41,12 +53,13 @@ public class Control {
         return realizarPedido.buscarProducto(nombreProducto);
     }
     
-    public List<ProductoDTO> listarProductos() throws NegocioException {
+    public List<ProductoDTO> listarProductos() throws NegocioException, NegocioException, NegocioException {
         return realizarPedido.listarProductos();
     }
 
     private void cargarMenuProductos() {
     }
+    
     public List<ProductoDTO> obtenerListaProductos() {
         return listaProductos;
     }
@@ -174,8 +187,21 @@ public class Control {
     
     public void mostrarGestionProductosFORM(){
         mostrarPantallas(new GestionProductosFORM(this));
+    }  
+    
+    public void mostrarInventarioEntradaFORM() throws NegocioException{
+        mostrarPantallas(new InventarioProductosEntradaFORM(this));
     }    
-    public void mostrarInventarioFORM(){
-        mostrarPantallas(new InventarioProductosFORM(this));
+    
+    public void mostrarInventarioSalidaFORM(){
+        mostrarPantallas(new InventarioProductosSalidaFORM(this));
+    }
+    
+    public List<ProductoDTO> obtenerProducto(String nombreProducto) throws NegocioException {
+        return inventarioCU.obtenerProducto(nombreProducto);
+    }
+    
+    public List<ProductoDTO> listarProducto() throws NegocioException {
+        return inventarioCU.listarProductos();
     }
 }

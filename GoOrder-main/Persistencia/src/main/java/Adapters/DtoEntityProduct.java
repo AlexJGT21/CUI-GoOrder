@@ -27,10 +27,27 @@ public class DtoEntityProduct {
      * @param producto Parametro de conversion
      * @return Una DTO
      */
-    public static ProductoDTO toDTO(ProductoDTO producto){
+    public static ProductoDTO toDTO(Producto producto){
         if (producto == null) {
             return null;
         }
         return new ProductoDTO(producto.getNombre(), producto.getDescripcion(), producto.getPrecio(), producto.getImagen());
-    }    
+    }
+    
+    /**
+     * Adapter que recibe una Producto DTO y regresa una Producto EntityParaMemoria
+     * @param producto DTO
+     * @return EntityMemory
+     */
+    public static Producto toEntityMemory(ProductoDTO producto) {
+        if (producto == null) {
+            return null;
+        }
+        return new Producto(producto.getId(),
+                            producto.getNombre(), 
+                            producto.getDescripcion(),
+                            producto.getPrecio(),
+                            producto.getCantidad(),
+                            producto.getImagenP());
+    }
 }

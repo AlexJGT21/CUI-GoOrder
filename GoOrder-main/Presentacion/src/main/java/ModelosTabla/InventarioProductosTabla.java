@@ -10,12 +10,12 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author 
  */
-public class InventarioTabla extends AbstractTableModel {
+public class InventarioProductosTabla extends AbstractTableModel {
 
     private final String[] columnas = {"ID", "Nombre", "Descripción", "Precio", "Cantidad", "Imagen"};
     private List<ProductoDTO> listaProductos = new ArrayList<>();
     
-    public InventarioTabla(List<ProductoDTO> producto) {
+    public InventarioProductosTabla(List<ProductoDTO> producto) {
         this.listaProductos = producto;
     }
     
@@ -25,9 +25,19 @@ public class InventarioTabla extends AbstractTableModel {
     }
 
     @Override
+    public String getColumnName(int column) {
+        return columnas[column];
+    }        
+
+    @Override
     public int getColumnCount() {
         return columnas.length;
     }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }   
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -45,7 +55,7 @@ public class InventarioTabla extends AbstractTableModel {
     
     public void actualizarDatos(List<ProductoDTO> nuevosDatos) {
         this.listaProductos = nuevosDatos;
-        fireTableDataChanged();
+        this.fireTableDataChanged();
     }
     
     public void agregarFila(ProductoDTO nuevaFila) {

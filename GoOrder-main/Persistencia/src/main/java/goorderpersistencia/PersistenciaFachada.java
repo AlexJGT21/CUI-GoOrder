@@ -1,11 +1,15 @@
 
 package goorderpersistencia;
 
+import Entidades.EntradaProducto;
 import Entidades.Producto;
+import Entidades.SalidaProducto;
+import Interfaces.IEntradaProductoDAO;
 import Interfaces.IInventarioDAO;
 import Interfaces.IPersistenciaFachada;
 import Interfaces.IProductoDAO;
 import PatronFactory.IFactoryDAO;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -17,6 +21,7 @@ public class PersistenciaFachada implements IPersistenciaFachada {
     //Interfaces
     private IProductoDAO productoDAO;
     private IInventarioDAO inventarioDAO;
+    private IEntradaProductoDAO entradaProductoDAO;
     
 //    public PersistenciaFachada() {
 //        // temporal
@@ -37,6 +42,7 @@ public class PersistenciaFachada implements IPersistenciaFachada {
         //Y ese crearProductoDAO tiene ya un producto concreto creado que es la DAO de memoria de productos
         //No sabemos quien lo implementa (this.productoDAO), solo que es una clase que cumple la implementacion (crearProductosDAO)
         this.inventarioDAO = factory.crearInventarioDAO();
+        this.entradaProductoDAO = factory.crearEntreadaProductoDAO();
     }
 
     //Producto
@@ -57,8 +63,13 @@ public class PersistenciaFachada implements IPersistenciaFachada {
     }
 
     @Override
-    public List<Producto> obtenerProducto(Producto producto) throws PersistenciaException {
-        return this.productoDAO.obtenerProducto(producto);
+    public List<Producto> obtenerProducto(String nombreProducto) throws PersistenciaException {
+        return this.productoDAO.obtenerProducto(nombreProducto);
+    }
+    
+    @Override
+    public List<Producto> listarProductos() throws PersistenciaException {
+        return this.productoDAO.listarProductos();
     }
 
     //Inventario
@@ -71,5 +82,54 @@ public class PersistenciaFachada implements IPersistenciaFachada {
     @Override
     public List<Producto> listarProductosFiltros(String nombre, Integer cantidad) throws PersistenciaException {
         return this.inventarioDAO.listarProductosFiltros(nombre, cantidad);
+    }
+
+    @Override
+    public Producto agregarProducto(Producto producto) throws PersistenciaException {
+        return this.inventarioDAO.agregarProducto(producto);
+    }
+    
+    //Entrada productos
+
+    @Override
+    public EntradaProducto nuevaEntradaProducto(EntradaProducto entradaProducto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public EntradaProducto actualizarEntradaProducto(EntradaProducto entradaProducto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<EntradaProducto> listarEntradasProducotos() throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<EntradaProducto> listarHistorialEntradas(LocalDate inicio, LocalDate fin) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    //Salida productos
+
+    @Override
+    public SalidaProducto nuevaSalidaProducto(SalidaProducto entradaProducto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public SalidaProducto actualizarSalidaProducto(SalidaProducto entradaProducto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<SalidaProducto> listarSalidaProductos() throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<SalidaProducto> listarHistorialSalidas(LocalDate inicio, LocalDate fin) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

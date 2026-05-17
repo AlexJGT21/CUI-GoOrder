@@ -1,4 +1,4 @@
-package org.example;
+package Interfaces;
 
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.CostoDTO;

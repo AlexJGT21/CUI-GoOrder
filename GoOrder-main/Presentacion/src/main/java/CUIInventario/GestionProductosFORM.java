@@ -1,10 +1,13 @@
 
-package GUI;
+package CUIInventario;
 
 import Control.Control;
 import Pattern.BotonRedondeado;
 import Pattern.ColorBoton;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.example.NegocioException;
 
 /**
  *
@@ -46,7 +49,7 @@ public class GestionProductosFORM extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        btnHistorial.setBackground(new java.awt.Color(0, 0, 0));
+        btnHistorial.setBackground(new java.awt.Color(35, 35, 35));
         btnHistorial.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnHistorial.setForeground(new java.awt.Color(0, 255, 150));
         btnHistorial.setText("Historial productos");
@@ -71,7 +74,7 @@ public class GestionProductosFORM extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 255, 150));
         jLabel1.setText("Gestión Productos");
 
-        btnRegistroES.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegistroES.setBackground(new java.awt.Color(35, 35, 35));
         btnRegistroES.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRegistroES.setForeground(new java.awt.Color(0, 255, 150));
         btnRegistroES.setText("Registrar E/S productos");
@@ -92,7 +95,7 @@ public class GestionProductosFORM extends javax.swing.JFrame {
             }
         });
 
-        btnConsultarProductos.setBackground(new java.awt.Color(0, 0, 0));
+        btnConsultarProductos.setBackground(new java.awt.Color(35, 35, 35));
         btnConsultarProductos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnConsultarProductos.setForeground(new java.awt.Color(0, 255, 150));
         btnConsultarProductos.setText("Consultar productos");
@@ -192,7 +195,13 @@ public class GestionProductosFORM extends javax.swing.JFrame {
         );
         
         if (seleccion == 0) {
-            control.mostrarInventarioFORM();
+            try {
+                control.mostrarInventarioEntradaFORM();
+            } catch (NegocioException ex) {
+                Logger.getLogger(GestionProductosFORM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (seleccion == 1) {
+            control.mostrarInventarioSalidaFORM();
         }
         
     }//GEN-LAST:event_btnRegistroESActionPerformed

@@ -1,10 +1,12 @@
 
-package GUI;
+package CUIInventario;
 
 import Control.Control;
-import ModelosTabla.InventarioTabla;
+import GoOrderDTO.ProductoDTO;
+import ModelosTabla.InventarioProductosTabla;
 import Pattern.BotonRedondeado;
 import Pattern.ColorBoton;
+import java.util.List;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
@@ -12,7 +14,7 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author 
  */
-public class InventarioProductosFORM extends javax.swing.JFrame {
+public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
 
     private final ColorBoton colorB;
     private final ColorBoton colorA;
@@ -21,13 +23,17 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
     private final ColorBoton colorRtn;
     private final Control control;
     private final SpinnerNumberModel modeloSP;
-    private InventarioTabla inventarioTabla;
+    private InventarioProductosTabla inventarioTabla;
     
-    public InventarioProductosFORM(Control control) {
+    public InventarioProductosSalidaFORM(Control control) {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
-//        inventarioTabla = new InventarioTabla();
+        
+        List<ProductoDTO> productosTabla = control.obtenerListaProductos();
+        this.inventarioTabla = new InventarioProductosTabla(productosTabla);
+        this.tbProductos.setModel(this.inventarioTabla);      
+        
         colorB = new ColorBoton(btnBuscar);
         colorA = new ColorBoton(btnActualizar);
         colorI = new ColorBoton(btnImagen);
@@ -77,7 +83,7 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 255, 150));
-        jLabel1.setText("Entrada de productos");
+        jLabel1.setText("Salida de productos");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 255, 150));
@@ -107,7 +113,7 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(0, 255, 150));
         jLabel8.setText("Cantidad de producto:");
 
-        btnRegresar.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegresar.setBackground(new java.awt.Color(35, 35, 35));
         btnRegresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnRegresar.setForeground(new java.awt.Color(0, 255, 150));
         btnRegresar.setText("Regresar");
@@ -128,7 +134,7 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
             }
         });
 
-        btnImagen.setBackground(new java.awt.Color(0, 0, 0));
+        btnImagen.setBackground(new java.awt.Color(35, 35, 35));
         btnImagen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnImagen.setForeground(new java.awt.Color(0, 255, 150));
         btnImagen.setText("Ingresar imagen");
@@ -149,7 +155,7 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
             }
         });
 
-        btnRegistrar.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegistrar.setBackground(new java.awt.Color(35, 35, 35));
         btnRegistrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnRegistrar.setForeground(new java.awt.Color(0, 255, 150));
         btnRegistrar.setText("Registrar");
@@ -170,7 +176,7 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
             }
         });
 
-        btnActualizar.setBackground(new java.awt.Color(0, 0, 0));
+        btnActualizar.setBackground(new java.awt.Color(35, 35, 35));
         btnActualizar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(0, 255, 150));
         btnActualizar.setText("Actualizar");
@@ -191,7 +197,7 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
             }
         });
 
-        btnBuscar.setBackground(new java.awt.Color(0, 0, 0));
+        btnBuscar.setBackground(new java.awt.Color(35, 35, 35));
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(0, 255, 150));
         btnBuscar.setText("Buscar");
@@ -276,10 +282,11 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -363,7 +370,13 @@ public class InventarioProductosFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarMouseExited
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
+        String nombre = txtNombre.getText();
+        String descripcion = txtDescripcion.getText();
+        String precio = txtPrecio.getText();
+        Integer cantidad = (Integer) spCantidad.getValue();
+        
+        
+        
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed

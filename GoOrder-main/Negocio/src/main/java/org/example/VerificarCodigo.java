@@ -1,5 +1,6 @@
 package org.example;
 
+import Interfaces.ICodigoDescuentoServicio;
 import GoOrderDTO.CodigoDescuentoDTO;
 
 public class VerificarCodigo {

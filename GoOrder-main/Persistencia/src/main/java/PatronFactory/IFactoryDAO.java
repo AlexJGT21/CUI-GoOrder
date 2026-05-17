@@ -1,8 +1,10 @@
 
 package PatronFactory;
 
+import Interfaces.IEntradaProductoDAO;
 import Interfaces.IInventarioDAO;
 import Interfaces.IProductoDAO;
+import Interfaces.ISalidaProductoDAO;
 
 /**
  *
@@ -20,4 +22,6 @@ public interface IFactoryDAO {
     //No sabemos quien las implementaI
     public abstract IProductoDAO crearProductosDAO();
     public abstract IInventarioDAO crearInventarioDAO();
+    public abstract IEntradaProductoDAO crearEntreadaProductoDAO();
+    public abstract ISalidaProductoDAO crearSalidaProductoDAO();
 }

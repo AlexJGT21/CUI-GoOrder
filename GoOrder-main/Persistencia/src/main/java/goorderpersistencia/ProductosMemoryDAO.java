@@ -11,20 +11,19 @@ import java.util.logging.Logger;
  *
  * @author
  */
-public class ProductosMemoriaDAO implements IProductoDAO {
+public class ProductosMemoryDAO implements IProductoDAO {
 
     /**
      * Este es un producto concreto que implementa al producto con sus metodos "IProductoDAO"
-     */
-    
-    private static final Logger LOGGER = Logger.getLogger(ProductosMemoriaDAO.class.getName());
+     */    
+    private static final Logger LOGGER = Logger.getLogger(ProductosMemoryDAO.class.getName());
     
     /**
      * Propia lista de productos
      */
     private List<Producto> productos;
 
-    public ProductosMemoriaDAO() {
+    public ProductosMemoryDAO() {
         productos = new ArrayList<>();
         productos.add(new Producto("Latte", "Un tipo de cafe", 50.00, "latte_vainilla.png"));
         productos.add(new Producto("Paninni", "Queso y Jamon", 50.00, "panini_clasico.png"));
@@ -79,10 +78,9 @@ public class ProductosMemoriaDAO implements IProductoDAO {
         try {
             for (Producto p: productos) {
                 if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
-                    p.setPrecio(producto.getPrecio());
                     p.setCantidad(producto.getCantidad());
                 }
-            }
+            }     
             return producto;
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
@@ -106,13 +104,19 @@ public class ProductosMemoriaDAO implements IProductoDAO {
     }
 
     @Override
-    public List<Producto> obtenerProducto(Producto producto) throws PersistenciaException {
+    public List<Producto> obtenerProducto(String nombreProducto) throws PersistenciaException {
+        List<Producto> lista = new ArrayList<>();
         try {
             if (productos.isEmpty()) {
                 throw new PersistenciaException("Error: Lista vacia.");
             } else { //else porque si xd
-                return productos;
+                for (Producto p: productos) {
+                    if (p.getNombre().toLowerCase().equalsIgnoreCase(nombreProducto.toLowerCase())) {
+                        lista.add(p);
+                    }
+                }
             }
+            return lista;
         } catch (PersistenciaException e) {
             LOGGER.severe(e.getMessage());
             throw new PersistenciaException("Error: " + e.getMessage(), e);

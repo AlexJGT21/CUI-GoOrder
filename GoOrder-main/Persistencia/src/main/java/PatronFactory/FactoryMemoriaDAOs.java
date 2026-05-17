@@ -1,10 +1,14 @@
 
 package PatronFactory;
 
+import Interfaces.IEntradaProductoDAO;
 import Interfaces.IInventarioDAO;
 import Interfaces.IProductoDAO;
-import goorderpersistencia.InventarioMemoriaDAO;
-import goorderpersistencia.ProductosMemoriaDAO;
+import Interfaces.ISalidaProductoDAO;
+import goorderpersistencia.EntradaProductoMemoryDAO;
+import goorderpersistencia.InventarioMemoryDAO;
+import goorderpersistencia.ProductosMemoryDAO;
+import goorderpersistencia.SalidaProductoDAO;
 
 /**
  *
@@ -33,11 +37,21 @@ public class FactoryMemoriaDAOs implements IFactoryDAO {
          * La clase que implementa la interfaz queremos crear una clase de "ProductosMemoriaDAO"
          * que es la que implementa nuestra interfaz "IProductoDAO = Producto"
          */
-        return new ProductosMemoriaDAO(); //ProductosMemoriaDAO = Producto concretos
+        return new ProductosMemoryDAO(); //ProductosMemoriaDAO = Producto concretos
     }    
 
     @Override
     public IInventarioDAO crearInventarioDAO() {
-        return new InventarioMemoriaDAO();
-    }  
+        return new InventarioMemoryDAO();
+    }
+
+    @Override
+    public IEntradaProductoDAO crearEntreadaProductoDAO() {
+        return new EntradaProductoMemoryDAO();
+    }
+
+    @Override
+    public ISalidaProductoDAO crearSalidaProductoDAO() {
+        return new SalidaProductoDAO();
+    }    
 }

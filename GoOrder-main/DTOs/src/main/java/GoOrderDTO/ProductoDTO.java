@@ -11,12 +11,15 @@ public class ProductoDTO {
     private String nombre;
     private String descripcion;
     private Double precio;
-    private Integer cantidadT;
+    private Integer cantidadT; //¿Por que le puse T?
     //IMAGENES
     private String imagen;
     private byte[] imagenP;
     
     private int cantidad = 1;
+    
+    public ProductoDTO() {
+    }
 
     /**
      * Constructor con atributo imagen String
