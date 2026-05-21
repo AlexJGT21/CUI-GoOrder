@@ -14,4 +14,6 @@ public interface IInventarioDAO {
     public abstract List<Producto> obtenerListaProductos() throws PersistenciaException;
     public abstract List<Producto> listarProductosFiltros(String nombre, Integer cantidad) throws PersistenciaException;
     public abstract Producto agregarProducto(Producto producto) throws PersistenciaException;
+    public abstract Producto actualizarSumarProductoInventario(Producto producto) throws PersistenciaException;
+    public abstract Producto actualizarRestarProductoInventario(Producto producto) throws PersistenciaException;
 }

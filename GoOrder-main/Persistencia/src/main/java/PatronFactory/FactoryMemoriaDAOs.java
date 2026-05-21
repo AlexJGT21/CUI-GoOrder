@@ -8,7 +8,7 @@ import Interfaces.ISalidaProductoDAO;
 import goorderpersistencia.EntradaProductoMemoryDAO;
 import goorderpersistencia.InventarioMemoryDAO;
 import goorderpersistencia.ProductosMemoryDAO;
-import goorderpersistencia.SalidaProductoDAO;
+import goorderpersistencia.SalidaProductoMemoryDAO;
 
 /**
  *
@@ -52,6 +52,6 @@ public class FactoryMemoriaDAOs implements IFactoryDAO {
 
     @Override
     public ISalidaProductoDAO crearSalidaProductoDAO() {
-        return new SalidaProductoDAO();
+        return new SalidaProductoMemoryDAO();
     }    
 }

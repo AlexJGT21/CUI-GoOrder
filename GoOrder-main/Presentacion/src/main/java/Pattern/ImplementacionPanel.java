@@ -6,8 +6,6 @@ import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -29,19 +27,21 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
     public ImplementacionPanel(Control control, ProductoDTO productoDescripcion) {
         this.control = control;
         this.productoDescripcion = productoDescripcion;
-        
         this.producto = new ProductoSeleccionadoDTO(
             productoDescripcion.getNombre(), 
             1,
             productoDescripcion.getPrecio(), 
             productoDescripcion.getPrecio(), 
             productoDescripcion
-        );        
+        );
         panel = new JPanel();
-        initComponents();       
+        initComponents();
         lbNombre.setText(productoDescripcion.getNombre());
         lbPrecio.setText("$"+productoDescripcion.getPrecio());
-        IngresarImagen.ingresarImagen(lbImagen, productoDescripcion.getImagen(), 170, 150);
+
+        byte[] base64 = productoDescripcion.getImagenP(); 
+
+        IngresarImagen.ingresarImagenBytes(lbImagen, base64, 170, 150);
     }
     
     private void notificacionProducto() {

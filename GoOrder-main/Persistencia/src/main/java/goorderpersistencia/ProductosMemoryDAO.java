@@ -111,7 +111,7 @@ public class ProductosMemoryDAO implements IProductoDAO {
                 throw new PersistenciaException("Error: Lista vacia.");
             } else { //else porque si xd
                 for (Producto p: productos) {
-                    if (p.getNombre().toLowerCase().equalsIgnoreCase(nombreProducto.toLowerCase())) {
+                    if (p.getNombre().toLowerCase().contains(nombreProducto.toLowerCase())) {
                         lista.add(p);
                     }
                 }
@@ -122,4 +122,19 @@ public class ProductosMemoryDAO implements IProductoDAO {
             throw new PersistenciaException("Error: " + e.getMessage(), e);
         }
     }        
+
+    @Override
+    public Producto obtenerProductoPorId(Producto producto) throws PersistenciaException {
+        if (productos == null || productos.isEmpty()) {
+            return null;
+        }
+        Producto existe = null;
+        for (Producto p: productos) {
+            if (p.getId().equals(producto.getId())) {
+                existe = p;
+                break;
+            }
+        }
+        return existe;
+    }
 }

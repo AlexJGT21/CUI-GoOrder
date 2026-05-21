@@ -1,0 +1,16 @@
+
+package Interfaces;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+/**
+ *
+ * @author
+ */
+public interface IBaseMongoDAO {
+    
+    public abstract MongoDatabase obtenerDataBase(MongoClient client);    
+    public abstract MongoCollection obtenerCollection(MongoDatabase dataBase);        
+}

@@ -1,6 +1,8 @@
 
 package goorderpersistencia;
 
+import DTOSPersistencia.DatosReporteEntrada;
+import DTOSPersistencia.DatosReporteSalida;
 import Entidades.EntradaProducto;
 import Entidades.Producto;
 import Entidades.SalidaProducto;
@@ -8,6 +10,7 @@ import Interfaces.IEntradaProductoDAO;
 import Interfaces.IInventarioDAO;
 import Interfaces.IPersistenciaFachada;
 import Interfaces.IProductoDAO;
+import Interfaces.ISalidaProductoDAO;
 import PatronFactory.IFactoryDAO;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +25,7 @@ public class PersistenciaFachada implements IPersistenciaFachada {
     private IProductoDAO productoDAO;
     private IInventarioDAO inventarioDAO;
     private IEntradaProductoDAO entradaProductoDAO;
+    private ISalidaProductoDAO salidaProductoDAO;
     
 //    public PersistenciaFachada() {
 //        // temporal
@@ -43,6 +47,7 @@ public class PersistenciaFachada implements IPersistenciaFachada {
         //No sabemos quien lo implementa (this.productoDAO), solo que es una clase que cumple la implementacion (crearProductosDAO)
         this.inventarioDAO = factory.crearInventarioDAO();
         this.entradaProductoDAO = factory.crearEntreadaProductoDAO();
+        this.salidaProductoDAO = factory.crearSalidaProductoDAO();
     }
 
     //Producto
@@ -71,6 +76,11 @@ public class PersistenciaFachada implements IPersistenciaFachada {
     public List<Producto> listarProductos() throws PersistenciaException {
         return this.productoDAO.listarProductos();
     }
+    
+    @Override
+    public Producto obtenerProductoPorId(Producto producto) throws PersistenciaException {
+        return this.productoDAO.obtenerProductoPorId(producto);
+    }
 
     //Inventario
     
@@ -89,47 +99,47 @@ public class PersistenciaFachada implements IPersistenciaFachada {
         return this.inventarioDAO.agregarProducto(producto);
     }
     
+    @Override
+    public Producto actualizarSumarProductoInventario(Producto producto) throws PersistenciaException {
+        return this.inventarioDAO.actualizarSumarProductoInventario(producto);
+    }
+    
+    @Override
+    public Producto actualizarRestarProductoInventario(Producto producto) throws PersistenciaException {
+        return this.inventarioDAO.actualizarRestarProductoInventario(producto);
+    }
+    
     //Entrada productos
 
     @Override
     public EntradaProducto nuevaEntradaProducto(EntradaProducto entradaProducto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.entradaProductoDAO.nuevaEntradaProducto(entradaProducto);
     }
 
     @Override
-    public EntradaProducto actualizarEntradaProducto(EntradaProducto entradaProducto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<EntradaProducto> listarEntradasProductos() throws PersistenciaException {
+        return this.entradaProductoDAO.listarEntradasProductos();
     }
 
     @Override
-    public List<EntradaProducto> listarEntradasProducotos() throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<EntradaProducto> listarHistorialEntradas(LocalDate inicio, LocalDate fin) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<DatosReporteEntrada> listarHistorialEntradas(LocalDate inicio, LocalDate fin) throws PersistenciaException {
+        return this.entradaProductoDAO.listarHistorialEntradas(inicio, fin);
     }
     
     //Salida productos
 
     @Override
     public SalidaProducto nuevaSalidaProducto(SalidaProducto entradaProducto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public SalidaProducto actualizarSalidaProducto(SalidaProducto entradaProducto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.salidaProductoDAO.nuevaSalidaProducto(entradaProducto);
     }
 
     @Override
     public List<SalidaProducto> listarSalidaProductos() throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.salidaProductoDAO.listarSalidaProductos();
     }
 
     @Override
-    public List<SalidaProducto> listarHistorialSalidas(LocalDate inicio, LocalDate fin) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public List<DatosReporteSalida> listarHistorialSalidas(LocalDate inicio, LocalDate fin) throws PersistenciaException {
+        return this.salidaProductoDAO.listarHistorialSalidas(inicio, fin);
+    }   
 }

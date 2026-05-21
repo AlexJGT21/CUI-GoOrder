@@ -58,7 +58,7 @@ public class DescripcionProductoFORM extends javax.swing.JFrame {
         lbNombre.setText(" " + productoDescripcion.getNombre());
         lbDescripcion.setText(productoDescripcion.getDescripcion());
         lbPrecio.setText("$" + productoDescripcion.getPrecio());
-        IngresarImagen.ingresarImagen(lbImagen, productoDescripcion.getImagen(), 388, 351);
+        IngresarImagen.ingresarImagenBytes(lbImagen, productoDescripcion.getImagenP(), 388, 351);
     }
 
     /**

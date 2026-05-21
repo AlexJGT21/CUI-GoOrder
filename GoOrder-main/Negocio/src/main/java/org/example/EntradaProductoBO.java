@@ -1,10 +1,12 @@
 
 package org.example;
 
+import DTOSPersistencia.DatosReporteEntrada;
 import Entidades.EntradaProducto;
+import GoOrderDTO.DatosReporteEntradaDTO;
 import GoOrderDTO.EntradaProductoDTO;
 import Interfaces.IEntradaProductoBO;
-import Interfaces.IEntradaProductoDAO;
+import Interfaces.IPersistenciaFachada;
 import goorderpersistencia.PersistenciaException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,9 +20,9 @@ import java.util.logging.Logger;
 public class EntradaProductoBO implements IEntradaProductoBO {
 
     private static final Logger LOGGER = Logger.getLogger(EntradaProductoBO.class.getName());        
-    private IEntradaProductoDAO entradaProductoDAO;
+    private IPersistenciaFachada entradaProductoDAO;
     
-    public EntradaProductoBO(IEntradaProductoDAO entradaProductoDAO) {
+    public EntradaProductoBO(IPersistenciaFachada entradaProductoDAO) {
         this.entradaProductoDAO = entradaProductoDAO;
     }
 
@@ -35,19 +37,7 @@ public class EntradaProductoBO implements IEntradaProductoBO {
             throw new NegocioException("Error al registrar nueva entrada de producto.", e);
         }
     }
-
-    @Override
-    public EntradaProductoDTO actualizarEntradaProducto(EntradaProductoDTO entradaProducto) throws NegocioException {
-        try {
-            EntradaProducto entradaProdu = Adapters.AdapterEntradaProducto.toEntity(entradaProducto);
-            entradaProductoDAO.actualizarEntradaProducto(entradaProdu);
-            return entradaProducto;
-        } catch (PersistenciaException e) {
-            LOGGER.severe(e.getMessage());
-            throw new NegocioException("Error al actualizar entrada de producto.", e);
-        }
-    }
-
+    
     @Override
     public List<EntradaProductoDTO> listarEntradasProductos() throws NegocioException {
         try {
@@ -65,18 +55,17 @@ public class EntradaProductoBO implements IEntradaProductoBO {
     }
 
     @Override
-    public List<EntradaProductoDTO> listarHistorialEntradas(LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
+    public List<DatosReporteEntradaDTO> listarHistorialEntradas(LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
         try {
-            List<EntradaProducto> lista = entradaProductoDAO.listarHistorialEntradas(fechaInicio, fechaFin);
-            List<EntradaProductoDTO> listaDTO = new ArrayList<>();
-            
-            for (EntradaProducto entradaEntity: lista) {
-                listaDTO.add(Adapters.AdapterEntradaProducto.toDto(entradaEntity));
+            List<DatosReporteEntradaDTO> listaDTO = new ArrayList<>();
+            List<DatosReporteEntrada> lista = entradaProductoDAO.listarHistorialEntradas(fechaInicio, fechaFin);
+            for (DatosReporteEntrada datos: lista) {
+                listaDTO.add(Adapters.AdapterDatosReporteEntrada.toDTO(datos));
             }
             return listaDTO;
         } catch (PersistenciaException e) {
             LOGGER.severe(e.getMessage());
-            throw new NegocioException("Error al listar historial de entradas.");
+            throw new NegocioException("Error al listar entrada de productos con las fechas indicadas.");
         }
     }
 }

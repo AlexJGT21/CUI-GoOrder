@@ -11,19 +11,16 @@ import java.util.List;
 public class SalidaProductoDTO {
     
     private String id;
-    private List<ProductoDTO> productosIDs;
     private Integer cantidadTotalSalidas;
     private List<RegistroSalidaDTO> registroSalida;
 
     public SalidaProductoDTO() {
-        productosIDs = new ArrayList<>();
-        cantidadTotalSalidas = 0;
-        registroSalida = new ArrayList<>();
-    }
+        this.cantidadTotalSalidas = 0;
+        this.registroSalida = new ArrayList<>();
+    }    
 
-    public SalidaProductoDTO(String id, List<ProductoDTO> productosIDs, Integer cantidadTotalSalidas, List<RegistroSalidaDTO> registroSalida) {
+    public SalidaProductoDTO(String id, Integer cantidadTotalSalidas, List<RegistroSalidaDTO> registroSalida) {
         this.id = id;
-        this.productosIDs = productosIDs;
         this.cantidadTotalSalidas = cantidadTotalSalidas;
         this.registroSalida = registroSalida;
     }
@@ -34,14 +31,6 @@ public class SalidaProductoDTO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<ProductoDTO> getProductosIDs() {
-        return productosIDs;
-    }
-
-    public void setProductosIDs(List<ProductoDTO> productosIDs) {
-        this.productosIDs = productosIDs;
     }
 
     public Integer getCantidadTotalSalidas() {
@@ -59,7 +48,9 @@ public class SalidaProductoDTO {
     public void setRegistroSalida(List<RegistroSalidaDTO> registroSalida) {
         this.registroSalida = registroSalida;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "SalidaProductoDTO{" + "id=" + id + ", cantidadTotalSalidas=" + cantidadTotalSalidas + ", registroSalida=" + registroSalida + '}';
+    }
 }

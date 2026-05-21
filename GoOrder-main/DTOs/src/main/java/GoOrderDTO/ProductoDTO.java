@@ -146,6 +146,6 @@ public class ProductoDTO {
 
     @Override
     public String toString() {
-        return "ProductoDTO{" + "nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", imagen=" + imagen + ", cantidad=" + cantidad + '}';
+        return "ProductoDTO{" + "nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", imagen=" + imagen + ", cantidad=" + cantidadT + '}';
     }        
 }

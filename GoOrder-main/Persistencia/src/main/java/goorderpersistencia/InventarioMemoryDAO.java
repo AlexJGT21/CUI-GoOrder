@@ -51,9 +51,9 @@ public class InventarioMemoryDAO implements IInventarioDAO {
             
             //Es correcto todo este if anidado?
             for (Producto p: inventario) { //Filtro para comparar tambien por el producto
-                if (filtrarPorNombre && filtrarPorCantidad && p.getNombre().equals(nombre) && p.getCantidad() == cantidad) {
+                if (filtrarPorNombre && filtrarPorCantidad && p.getNombre().contains(nombre) && p.getCantidad()== cantidad) {
                     listaProductos.add(p);
-                } else if (filtrarPorNombre && p.getNombre().equals(nombre)) {
+                } else if (filtrarPorNombre && p.getNombre().contains(nombre)) {
                     listaProductos.add(p);
                 } else if (filtrarPorCantidad && p.getCantidad() == cantidad) {
                     listaProductos.add(p);
@@ -64,5 +64,47 @@ public class InventarioMemoryDAO implements IInventarioDAO {
             LOGGER.severe(e.getMessage());
             throw new PersistenciaException("Error al filtrar productos.", e);
         }        
+    }
+
+    @Override
+    public Producto actualizarSumarProductoInventario(Producto producto) throws PersistenciaException {
+        try {
+            Producto existeProducto = null;
+            for (Producto p: inventario) {
+                if (p.getId().equals(producto.getId())) {
+                    existeProducto = p;
+                    break;
+                }
+            }            
+            if (existeProducto != null) {
+                int nuevoStock = existeProducto.getCantidad() + producto.getCantidad();
+                existeProducto.setCantidad(nuevoStock);
+            }
+            return existeProducto;
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new PersistenciaException("Error al actualizar stock del producto.");
+        }
+    }
+
+    @Override
+    public Producto actualizarRestarProductoInventario(Producto producto) throws PersistenciaException {
+       try {
+            Producto existeProducto = null;
+            for (Producto p: inventario) {
+                if (p.getId().equals(producto.getId())) {
+                    existeProducto = p;
+                    break;
+                }
+            }            
+            if (existeProducto != null) {
+                int nuevoStock = existeProducto.getCantidad() - producto.getCantidad();
+                existeProducto.setCantidad(nuevoStock);
+            }
+            return existeProducto;
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new PersistenciaException("Error al actualizar stock del producto.");
+        }
     }
 }

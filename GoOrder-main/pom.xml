@@ -15,12 +15,12 @@
 </properties>
 
     <modules>
-        <module>Dominio</module>
         <module>DTOs</module>
         <module>Infraestructura</module>
         <module>Negocio</module>
         <module>Persistencia</module>
         <module>Presentacion</module>
         <module>RealizarPedidoCUE</module>
+        <module>Dominio</module>
     </modules>
 </project>

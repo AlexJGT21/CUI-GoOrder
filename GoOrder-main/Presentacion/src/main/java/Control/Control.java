@@ -1,16 +1,27 @@
 
 package Control;
 
+import CUIInventario.ConsultarProductosFORM;
 import CUIInventario.InventarioProductosEntradaFORM;
 import CUIInventario.GestionProductosFORM;
+import CUIInventario.HistorialProductosEntradaFORM;
+import CUIInventario.HistorialProductosSalidaFORM;
 import CUIInventario.InventarioProductosSalidaFORM;
-import CUInterfaces.ICUInventario;
+import CUInterfaces.ICUIEntradaProducto;
+import CUInterfaces.ICUIInventario;
+import CUInterfaces.ICUIProducto;
+import CUInterfaces.ICUISalidaProducto;
 import GUI.*;
 import GoOrderDTO.CarritoDTO;
+import GoOrderDTO.DatosReporteEntradaDTO;
+import GoOrderDTO.DatosReporteSalidaDTO;
+import GoOrderDTO.EntradaProductoDTO;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
+import GoOrderDTO.SalidaProductoDTO;
 import GoOrderDTO.SucursalDTO;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -30,7 +41,11 @@ public class Control {
     
     //Casos de uso
     private IRealizarPedidoCUE realizarPedido;
-    private ICUInventario inventarioCU;    
+    private ICUIProducto casoProducto;
+    private ICUIInventario casoInventario;
+    private ICUIEntradaProducto casoEntrada;
+    private ICUISalidaProducto casoSalida;
+    
     
     List<ProductoDTO> listaProductos = new ArrayList<>();
 
@@ -39,8 +54,11 @@ public class Control {
         cargarMenuProductos();
     }
     
-    public Control(ICUInventario inventarioCU) {
-        this.inventarioCU = inventarioCU;
+    public Control(ICUIProducto casoProducto, ICUIInventario casoInventario, ICUIEntradaProducto casoEntrada, ICUISalidaProducto casoSalida) {
+        this.casoProducto = casoProducto;
+        this.casoInventario = casoInventario;
+        this.casoEntrada = casoEntrada;
+        this.casoSalida = casoSalida;
     }
 
     public ImageIcon obtenerImagen(String nombreImagen) {
@@ -53,17 +71,13 @@ public class Control {
         return realizarPedido.buscarProducto(nombreProducto);
     }
     
-    public List<ProductoDTO> listarProductos() throws NegocioException, NegocioException, NegocioException {
+    public List<ProductoDTO> listarProductos() throws NegocioException {
         return realizarPedido.listarProductos();
     }
 
     private void cargarMenuProductos() {
     }
-    
-    public List<ProductoDTO> obtenerListaProductos() {
-        return listaProductos;
-    }
-    
+
     public void agregarProducto(ProductoSeleccionadoDTO producto) throws NegocioException {
         realizarPedido.AgregarProductoCarrito(producto);
     }
@@ -193,15 +207,79 @@ public class Control {
         mostrarPantallas(new InventarioProductosEntradaFORM(this));
     }    
     
-    public void mostrarInventarioSalidaFORM(){
+    public void mostrarInventarioSalidaFORM() throws NegocioException{
         mostrarPantallas(new InventarioProductosSalidaFORM(this));
     }
     
+    public void mostrarConsultarProductosFORM() throws NegocioException {
+        mostrarPantallas(new ConsultarProductosFORM(this));
+    }
+    
+    public void mostrarHistorialEntradasFORM() throws NegocioException {
+        mostrarPantallas(new HistorialProductosEntradaFORM(this));
+    }
+    
+    public void mostrarHistorialSalidasFORM() throws NegocioException {
+        mostrarPantallas(new HistorialProductosSalidaFORM(this));
+    }
+    
+    //Producto
+    public ProductoDTO crearProducto(ProductoDTO producto) throws NegocioException {
+        return casoProducto.crearProducto(producto);
+    }
+    
+    public ProductoDTO actualizarProducto(ProductoDTO producto) throws NegocioException {
+        return casoProducto.actualizarProducto(producto);
+    }
+    
+    public ProductoDTO eliminarProducto(ProductoDTO producto) throws NegocioException {
+        return casoProducto.eliminarProducto(producto);
+    }
+    
     public List<ProductoDTO> obtenerProducto(String nombreProducto) throws NegocioException {
-        return inventarioCU.obtenerProducto(nombreProducto);
+        return casoProducto.obtenerProducto(nombreProducto);
     }
     
     public List<ProductoDTO> listarProducto() throws NegocioException {
-        return inventarioCU.listarProductos();
+        return casoProducto.listarProductos();
     }
+    
+    //Inventario
+    public ProductoDTO agregarProducto(ProductoDTO producto) throws NegocioException {
+        return casoInventario.agregarProducto(producto);
+    }
+    
+    public List<ProductoDTO> obtenerListaProductos() throws NegocioException {
+        return casoInventario.obtenerListaProductos();
+    }
+    
+    public List<ProductoDTO> listarProductosFiltros(String nombre, Integer cantidad) throws NegocioException {
+        return casoInventario.listarProductosFiltros(nombre, cantidad);
+    }
+    
+    public ProductoDTO actualizarSumarProductoInventario(ProductoDTO producto) throws NegocioException {
+        return casoInventario.actualizarSumarProductoInventario(producto);
+    }
+    
+    public ProductoDTO actualizarRestarProductoInventario(ProductoDTO producto) throws NegocioException {
+        return casoInventario.actualizarRestarProductoInventario(producto);
+    }
+    
+    //Entrada producto
+    public EntradaProductoDTO nuevaEntradaProducto(List<ProductoDTO> listaProductosEntrantes) throws NegocioException {
+        return casoEntrada.nuevaEntradaProducto(listaProductosEntrantes);
+    }
+
+    public List<DatosReporteEntradaDTO> listarHistorialEntradas(LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
+        return casoEntrada.listarHistorialEntradas(fechaInicio, fechaFin);
+    }
+    
+    //Salida producto
+    public SalidaProductoDTO nuevaSalidaProducto(List<ProductoDTO> listaProductosSalientes) throws NegocioException {
+        return casoSalida.nuevaSalidaProducto(listaProductosSalientes);
+    }
+    
+     public List<DatosReporteSalidaDTO> listarHistorialSalidas(LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
+        return casoSalida.listarHistorialSalidas(fechaInicio, fechaFin);
+    }    
 }

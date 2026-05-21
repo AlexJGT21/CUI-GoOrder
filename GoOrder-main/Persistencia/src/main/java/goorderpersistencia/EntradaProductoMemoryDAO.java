@@ -1,6 +1,7 @@
 
 package goorderpersistencia;
 
+import DTOSPersistencia.DatosReporteEntrada;
 import Entidades.EntradaProducto;
 import Entidades.RegistroEntrada;
 import Interfaces.IEntradaProductoDAO;
@@ -37,45 +38,6 @@ public class EntradaProductoMemoryDAO implements IEntradaProductoDAO {
     }
 
     @Override
-    public EntradaProducto actualizarEntradaProducto(EntradaProducto entradaProducto) throws PersistenciaException {
-        try {
-            //Validaciones
-            if (entradaProductos.isEmpty()) {
-                throw new PersistenciaException("Error: No existen productos para realizar actualización.");
-            }
-            if (entradaProducto == null || entradaProducto.getId() == null) {
-                throw new PersistenciaException("Error al actualizar entrada de producto.");
-            }
-            
-            //Recorre los productos
-            for (EntradaProducto entradaProdu: entradaProductos) { //AQUÍ ARRIBA
-                //Los compara para ver si es la entrada correcta
-                if (entradaProdu.getId().equals(entradaProducto.getId())) {
-                    
-                    //Obtiene el registro tomado en pantalla (UI)
-                    RegistroEntrada registroEntrada = entradaProducto.getRegistroEntrada().get(0);
-                    //Añade un nuevo registro
-                    entradaProdu.getRegistroEntrada().add(registroEntrada);
-                    
-                    int total = 0;
-                    //Recorremos los registros que tenemos arriba
-                    for (RegistroEntrada regEntrada: entradaProdu.getRegistroEntrada()) {
-                        //Por cada entrada, vamos obteniendo la cantidad, y lavamso acumulando
-                        total += regEntrada.getCantidad();
-                    }
-                    //Luego al registro de entrada nuevo, mas lo que tenemos le seteamos la nueva cantidad global
-                    entradaProdu.setCantidadTotalProductos(total);
-                    return entradaProdu;
-                }
-            }
-        } catch (PersistenciaException e) {
-            LOGGER.severe(e.getMessage());
-            throw new PersistenciaException("Error al actualizar producto y registrar su entrada.", e);
-        }
-        return null;
-    }
-
-    @Override
     public List<EntradaProducto> listarEntradasProductos() throws PersistenciaException {
         try {
             if (entradaProductos.isEmpty()) {
@@ -89,9 +51,10 @@ public class EntradaProductoMemoryDAO implements IEntradaProductoDAO {
         }
     }
 
+    //--METODO INHABILITADO MOMENTANEAMENTE
     @Override
-    public List<EntradaProducto> listarHistorialEntradas(LocalDate fechaInicio, LocalDate fechaFin) throws PersistenciaException {
-        List<EntradaProducto> listaHistorialEntradas = new ArrayList<>();
+    public List<DatosReporteEntrada> listarHistorialEntradas(LocalDate fechaInicio, LocalDate fechaFin) throws PersistenciaException {
+        List<DatosReporteEntrada> listaHistorialEntradas = new ArrayList<>();
         try {
             if (entradaProductos.isEmpty()) {
                 throw new PersistenciaException("Error: No existen productos para consultar historial.");
@@ -109,7 +72,7 @@ public class EntradaProductoMemoryDAO implements IEntradaProductoDAO {
                     }
                 }
                 if (existeRegistro) {
-                    listaHistorialEntradas.add(entradaProdu);
+                    //listaHistorialEntradas.add(e);
                 }
             }
             return listaHistorialEntradas;            

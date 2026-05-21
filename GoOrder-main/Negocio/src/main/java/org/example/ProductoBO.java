@@ -5,8 +5,8 @@ import Adapters.DtoEntityProduct;
 import Entidades.Producto;
 import GeneradorIDS.IDProductoGenerador;
 import GoOrderDTO.ProductoDTO;
+import Interfaces.IPersistenciaFachada;
 import Interfaces.IProductoBO;
-import Interfaces.IProductoDAO;
 import goorderpersistencia.PersistenciaException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +19,16 @@ import java.util.logging.Logger;
 public class ProductoBO implements IProductoBO {
 
     private static final Logger LOGGER = Logger.getLogger(ProductoBO.class.getName());
-    private IProductoDAO productoDAO;
+    private IPersistenciaFachada productoDAO;
 
-    public ProductoBO(IProductoDAO productoDAO) {
-        this.productoDAO = productoDAO;
+    public ProductoBO(IPersistenciaFachada persistencia) {
+        this.productoDAO = persistencia;
     }
 
     @Override
     public List<ProductoDTO> buscarProducto(String nombreProducto) throws NegocioException {
         try {
-            List<Producto> listaEntity = productoDAO.buscarProducto(nombreProducto);
+            List<Producto> listaEntity = productoDAO.obtenerProducto(nombreProducto);
             List<ProductoDTO> listaDTo = new ArrayList<>();
             
             for (Producto p: listaEntity) {
@@ -89,7 +89,7 @@ public class ProductoBO implements IProductoBO {
     @Override
     public ProductoDTO eliminarProducto(ProductoDTO producto) throws NegocioException {
         try {
-            Producto p = DtoEntityProduct.toEntity(producto);
+            Producto p = DtoEntityProduct.toEntityMemory(producto);
             productoDAO.eliminarProducto(p);
             return producto;
         } catch (PersistenciaException e) {
@@ -105,7 +105,7 @@ public class ProductoBO implements IProductoBO {
             List<ProductoDTO> listaDTO = new ArrayList<>();
 
             for (Producto produ: lista) {
-                listaDTO.add(DtoEntityProduct.toDTO(produ));
+                listaDTO.add(DtoEntityProduct.toDTOMemory(produ));
             }
             return listaDTO;
         } catch (PersistenciaException e) {
@@ -113,4 +113,16 @@ public class ProductoBO implements IProductoBO {
             throw new NegocioException("No fue posible obtener producto(s).");
         }
     }    
+
+    @Override
+    public ProductoDTO obtenerProductoPorId(ProductoDTO producto) throws NegocioException {
+        try {
+            Producto p = DtoEntityProduct.toEntity(producto);
+            productoDAO.obtenerProductoPorId(p);
+            return producto;
+        } catch (PersistenciaException e) {
+            LOGGER.severe(e.getMessage());
+            throw new NegocioException("No fue posible consultar el producto.");
+        }
+    }
 }

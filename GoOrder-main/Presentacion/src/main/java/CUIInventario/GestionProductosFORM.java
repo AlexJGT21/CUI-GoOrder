@@ -161,7 +161,32 @@ public class GestionProductosFORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-
+        String[] opciones = {"Historial Entradas", "Historial Salidas"};
+        int seleccion = JOptionPane.showOptionDialog
+        (
+            this,
+            "Historial de entradas y salidas",
+            "Historiales",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]
+        );
+        
+        if (seleccion == 0) {
+            try {
+                control.mostrarHistorialEntradasFORM();
+            } catch (NegocioException ex) {
+                Logger.getLogger(GestionProductosFORM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (seleccion == 1) {
+            try {
+                control.mostrarHistorialSalidasFORM();
+            } catch (NegocioException ex) {
+                Logger.getLogger(GestionProductosFORM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
     }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void btnHistorialMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialMouseEntered
@@ -201,9 +226,12 @@ public class GestionProductosFORM extends javax.swing.JFrame {
                 Logger.getLogger(GestionProductosFORM.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (seleccion == 1) {
-            control.mostrarInventarioSalidaFORM();
-        }
-        
+            try {
+                control.mostrarInventarioSalidaFORM();
+            } catch (NegocioException ex) {
+                Logger.getLogger(GestionProductosFORM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        
     }//GEN-LAST:event_btnRegistroESActionPerformed
 
     private void btnConsultarProductosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultarProductosMouseEntered
@@ -215,7 +243,11 @@ public class GestionProductosFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarProductosMouseExited
 
     private void btnConsultarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarProductosActionPerformed
-        // TODO add your handling code here:
+        try {
+            control.mostrarConsultarProductosFORM();
+        } catch (NegocioException ex) {
+            Logger.getLogger(GestionProductosFORM.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnConsultarProductosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

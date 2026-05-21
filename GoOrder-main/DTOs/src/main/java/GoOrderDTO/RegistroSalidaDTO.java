@@ -10,18 +10,18 @@ import java.time.LocalDateTime;
 public class RegistroSalidaDTO {
     
     private String id;
-    private String idSalidaProducto;
     private String idProducto;
+    private String nombre;
     private Integer cantidad;
     private LocalDateTime fechaHoraOperacion;
     
     public RegistroSalidaDTO() {        
     }
 
-    public RegistroSalidaDTO(String id, String idSalidaProducto, String idProducto, Integer cantidad, LocalDateTime fechaHoraOperacion) {
+    public RegistroSalidaDTO(String id, String idProducto, String nombre, Integer cantidad, LocalDateTime fechaHoraOperacion) {
         this.id = id;
-        this.idSalidaProducto = idSalidaProducto;
         this.idProducto = idProducto;
+        this.nombre = nombre;
         this.cantidad = cantidad;
         this.fechaHoraOperacion = fechaHoraOperacion;
     }
@@ -30,39 +30,44 @@ public class RegistroSalidaDTO {
         return id;
     }
 
-    public String getIdSalidaProducto() {
-        return idSalidaProducto;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getIdProducto() {
         return idProducto;
     }
 
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public LocalDateTime getFechaHoraOperacion() {
-        return fechaHoraOperacion;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setIdSalidaProducto(String idSalidaProducto) {
-        this.idSalidaProducto = idSalidaProducto;
-    }
-
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
     }
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
+    public LocalDateTime getFechaHoraOperacion() {
+        return fechaHoraOperacion;
+    }
+
     public void setFechaHoraOperacion(LocalDateTime fechaHoraOperacion) {
         this.fechaHoraOperacion = fechaHoraOperacion;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistroSalidaDTO{" + "id=" + id + ", idProducto=" + idProducto + ", nombre=" + nombre + ", cantidad=" + cantidad + ", fechaHoraOperacion=" + fechaHoraOperacion + '}';
     }
 }

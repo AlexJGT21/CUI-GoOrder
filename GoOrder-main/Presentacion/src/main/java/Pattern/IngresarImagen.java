@@ -25,5 +25,23 @@ public class IngresarImagen {
             label.setIcon(null);
             label.setText("SIN IMAGEN DISPONIBLE");
         }        
-    }   
+    }
+    
+    public static void ingresarImagenBytes(JLabel label, byte[] bytesImagen, int ancho, int alto) {
+        if (bytesImagen != null && bytesImagen.length > 0) {
+            try {                
+                ImageIcon icon = new ImageIcon(bytesImagen);
+                Image imagenEscalada = icon.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_SMOOTH);
+
+                label.setText("");
+                label.setIcon(new javax.swing.ImageIcon(imagenEscalada));               
+            } catch (Exception e) {
+                label.setIcon(null);
+                label.setText("ERROR AL CARGAR");
+            }
+        } else {
+            label.setIcon(null);
+            label.setText("SIN IMAGEN DISPONIBLE");
+        }
+    }
 }

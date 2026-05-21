@@ -19,7 +19,10 @@ public class DtoEntityProduct {
         if (producto == null) {
             return null;
         }
-        return new Producto(producto.getNombre(),producto.getDescripcion(),producto.getPrecio(), producto.getImagen());
+        return new Producto(producto.getNombre(),
+                            producto.getDescripcion(),
+                            producto.getPrecio(),
+                            producto.getImagen());
     }
     
     /**
@@ -31,7 +34,12 @@ public class DtoEntityProduct {
         if (producto == null) {
             return null;
         }
-        return new ProductoDTO(producto.getNombre(), producto.getDescripcion(), producto.getPrecio(), producto.getImagen());
+        return new ProductoDTO(producto.getId(),
+                               producto.getNombre(), 
+                               producto.getDescripcion(),
+                               producto.getPrecio(),
+                               producto.getCantidad(),
+                               producto.getImagenP());
     }
     
     /**
@@ -47,7 +55,19 @@ public class DtoEntityProduct {
                             producto.getNombre(), 
                             producto.getDescripcion(),
                             producto.getPrecio(),
-                            producto.getCantidad(),
+                            producto.getCantidadT(),
                             producto.getImagenP());
+    }
+    
+    public static ProductoDTO toDTOMemory(Producto producto) {
+        if (producto == null) {
+            return null;
+        }
+        return new ProductoDTO(producto.getId(), 
+                               producto.getNombre(), 
+                               producto.getDescripcion(), 
+                               producto.getPrecio(),
+                               producto.getCantidad(),
+                               producto.getImagenP());
     }
 }

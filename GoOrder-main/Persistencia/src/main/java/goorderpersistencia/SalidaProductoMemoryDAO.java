@@ -1,6 +1,7 @@
 
 package goorderpersistencia;
 
+import DTOSPersistencia.DatosReporteSalida;
 import Entidades.RegistroSalida;
 import Entidades.SalidaProducto;
 import Interfaces.ISalidaProductoDAO;
@@ -13,12 +14,12 @@ import java.util.logging.Logger;
  *
  * @author
  */
-public class SalidaProductoDAO implements ISalidaProductoDAO {
+public class SalidaProductoMemoryDAO implements ISalidaProductoDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(SalidaProductoDAO.class.getName());    
+    private static final Logger LOGGER = Logger.getLogger(SalidaProductoMemoryDAO.class.getName());    
     private List<SalidaProducto> salidaProductos;
     
-    public SalidaProductoDAO() {
+    public SalidaProductoMemoryDAO() {
         salidaProductos = new ArrayList<>();
     }
 
@@ -37,37 +38,6 @@ public class SalidaProductoDAO implements ISalidaProductoDAO {
     }
 
     @Override
-    public SalidaProducto actualizarSalidaProducto(SalidaProducto salidaProducto) throws PersistenciaException {
-        try {
-            if (salidaProductos.isEmpty()) {
-                throw new PersistenciaException("Error: No existen productos para realizar actualización");
-            }
-            if (salidaProductos == null && salidaProducto.getId() == null) {
-                throw new PersistenciaException("Error al actualizar salida de producto.");
-            }
-            
-            for (SalidaProducto salidaProdu: salidaProductos) {
-                if (salidaProdu.getId().equals(salidaProducto.getId())) {
-                    if (salidaProducto.getRegistroSalida() != null && !salidaProducto.getRegistroSalida().isEmpty()) {
-                        salidaProdu.getRegistroSalida().add(salidaProducto.getRegistroSalida().get(0));
-                    }
-                    
-                    int total = 0;
-                    for (RegistroSalida registroSalida: salidaProdu.getRegistroSalida()) {
-                        total += registroSalida.getCantidad();
-                    }
-                    salidaProdu.setCantidadTotalSalidas(total);
-                    return salidaProdu;
-                }
-            }            
-        } catch (PersistenciaException e) {
-            LOGGER.severe(e.getMessage());
-            throw new PersistenciaException("Error al actualizar salida de producto", e);
-        }
-        return null;
-    }
-
-    @Override
     public List<SalidaProducto> listarSalidaProductos() throws PersistenciaException {
         try {
             if (salidaProductos.isEmpty()) {
@@ -81,18 +51,19 @@ public class SalidaProductoDAO implements ISalidaProductoDAO {
         }
     }
 
+    //--METODO INHABILITADO MOMENTANEAMENTE
     @Override
-    public List<SalidaProducto> listarHistorialSalidas(LocalDate fechaInicio, LocalDate fechaFin) throws PersistenciaException {
-        List<SalidaProducto> listaHistorialEntradas = new ArrayList<>();
+    public List<DatosReporteSalida> listarHistorialSalidas(LocalDate fechaInicio, LocalDate fechaFin) throws PersistenciaException {
+        List<SalidaProducto> listaHistorialSalida = new ArrayList<>();
         try {
             if (salidaProductos.isEmpty()) {
                 throw new PersistenciaException("Error: No existen productos para consultar historial.");
             }
             
-            for (SalidaProducto entradaProdu: salidaProductos) {
+            for (SalidaProducto salidaProdu: salidaProductos) {
                 boolean existeRegistro = false;
                 
-                for (RegistroSalida registroEntrada: entradaProdu.getRegistroSalida()) {
+                for (RegistroSalida registroEntrada: salidaProdu.getRegistroSalida()) {
                     LocalDate fechaOperacion = registroEntrada.getFechaHoraOperacion().toLocalDate();
                     
                     if (!fechaOperacion.isBefore(fechaInicio) && !fechaOperacion.isAfter(fechaFin)) {
@@ -101,13 +72,14 @@ public class SalidaProductoDAO implements ISalidaProductoDAO {
                     }
                 }
                 if (existeRegistro) {
-                    listaHistorialEntradas.add(entradaProdu);
+                 //   listaHistorialSalida.add(salidaProdu);
                 }
             }
-            return listaHistorialEntradas;            
+            //return listaHistorialSalida;
         } catch (PersistenciaException e) {
             LOGGER.severe(e.getMessage());
             throw new PersistenciaException("Error al visualizar historial de entradas.", e);
         }
+        return null;
     }    
 }

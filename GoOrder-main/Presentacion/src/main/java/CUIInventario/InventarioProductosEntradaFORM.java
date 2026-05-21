@@ -2,11 +2,17 @@
 package CUIInventario;
 
 import Control.Control;
+import ExploradorDeArchivos.SelectorDeImagen;
 import GoOrderDTO.ProductoDTO;
 import ModelosTabla.InventarioProductosTabla;
 import Pattern.BotonRedondeado;
 import Pattern.ColorBoton;
+import java.awt.Image;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -19,29 +25,41 @@ import org.example.NegocioException;
 public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
 
     private final ColorBoton colorB;
+    private final ColorBoton colorG;
     private final ColorBoton colorA;
     private final ColorBoton colorI;
     private final ColorBoton colorR;
     private final ColorBoton colorRtn;
+    
     private final Control control;
+    
     private final SpinnerNumberModel modeloSP;
     private InventarioProductosTabla inventarioTabla;
+    
+    private byte[] bytesImagenSeleccionada = null;
+    
+    private List<ProductoDTO> listaTemporal;
     
     public InventarioProductosEntradaFORM(Control control) throws NegocioException {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
+        listaTemporal = new ArrayList<>();
         this.control = control;
 
         List<ProductoDTO> productosTabla = control.listarProducto();
         this.inventarioTabla = new InventarioProductosTabla(productosTabla);
-        this.tbProductos.setModel(this.inventarioTabla);        
+        this.tbProductos.setModel(this.inventarioTabla); 
+        
+        this.tbProductos.createDefaultColumnsFromModel();
+        this.tbProductos.setRowHeight(55);
         
         colorB = new ColorBoton(btnBuscar);
         colorA = new ColorBoton(btnActualizar);
         colorI = new ColorBoton(btnImagen);
         colorR = new ColorBoton(btnRegistrar);
         colorRtn = new ColorBoton(btnRegresar);
+        colorG = new ColorBoton(btnGuardar);
         
         modeloSP = new SpinnerNumberModel(1, 1, 100, 1);
         spCantidad.setModel(modeloSP);
@@ -52,7 +70,7 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
         String nombre = txtProducto.getText().trim();
         try {
             if (nombre == null || nombre.trim().isEmpty()) {
-                List<ProductoDTO> listaProductos = control.listarProducto();
+                List<ProductoDTO> listaProductos = control.obtenerListaProductos();
                 this.inventarioTabla.actualizarDatos(listaProductos);
                 return;
             }
@@ -72,6 +90,10 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
         txtNombre.setText("");
         txtDescripcion.setText("");
         txtPrecio.setText("");
+        
+        lbImagen.setIcon(null);
+        this.bytesImagenSeleccionada = null;
+        spCantidad.setValue(1);
     }
 
     /**
@@ -96,15 +118,16 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         spCantidad = new javax.swing.JSpinner();
-        jLabel7 = new javax.swing.JLabel();
+        lbImagen = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         btnRegresar = new BotonRedondeado();
         btnImagen = new BotonRedondeado();
         btnRegistrar = new BotonRedondeado();
         btnActualizar = new BotonRedondeado();
-        btnBuscar = new BotonRedondeado();
+        btnGuardar = new BotonRedondeado();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbProductos = new javax.swing.JTable();
+        btnBuscar = new BotonRedondeado();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,7 +159,7 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(0, 255, 150));
         jLabel6.setText("Precio de producto:");
 
-        jLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 255, 150)));
+        lbImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 255, 150)));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 255, 150));
@@ -185,9 +208,9 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
         });
 
         btnRegistrar.setBackground(new java.awt.Color(35, 35, 35));
-        btnRegistrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnRegistrar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnRegistrar.setForeground(new java.awt.Color(0, 255, 150));
-        btnRegistrar.setText("Registrar");
+        btnRegistrar.setText("Añadir a lista");
         btnRegistrar.setBorderPainted(false);
         btnRegistrar.setContentAreaFilled(false);
         btnRegistrar.setFocusPainted(false);
@@ -226,6 +249,40 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
             }
         });
 
+        btnGuardar.setBackground(new java.awt.Color(35, 35, 35));
+        btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(0, 255, 150));
+        btnGuardar.setText("Guardar productos");
+        btnGuardar.setBorderPainted(false);
+        btnGuardar.setContentAreaFilled(false);
+        btnGuardar.setFocusPainted(false);
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseExited(evt);
+            }
+        });
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        tbProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "", "", "", ""
+            }
+        ));
+        jScrollPane1.setViewportView(tbProductos);
+
         btnBuscar.setBackground(new java.awt.Color(35, 35, 35));
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(0, 255, 150));
@@ -247,19 +304,6 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
             }
         });
 
-        tbProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "", "", "", ""
-            }
-        ));
-        jScrollPane1.setViewportView(tbProductos);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -269,14 +313,6 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -284,22 +320,36 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
                                     .addComponent(jLabel6)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnRegistrar)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbImagen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(spCantidad, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                                         .addComponent(btnImagen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addGap(49, 49, 49))
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel4)
+                                                .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(6, 6, 6))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel1)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnGuardar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(jSeparator1))
                 .addContainerGap())
         );
@@ -311,11 +361,11 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -339,7 +389,7 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnImagen)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -387,7 +437,21 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnImagenMouseExited
 
     private void btnImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenActionPerformed
-        // TODO add your handling code here:
+        SelectorDeImagen selector = new SelectorDeImagen();
+        
+        selector.seleccionarImagen();
+        
+        byte[] imagenSeleccionadao = selector.obtenerBytesImagen();
+        
+        if (imagenSeleccionadao != null) {
+            this.bytesImagenSeleccionada = imagenSeleccionadao;
+            
+            ImageIcon icono = new ImageIcon(imagenSeleccionadao);
+            Image imagenEscala = icono.getImage().getScaledInstance(lbImagen.getWidth(), lbImagen.getHeight(), Image.SCALE_SMOOTH);
+            lbImagen.setIcon(new ImageIcon(imagenEscala));
+            lbImagen.revalidate();
+            lbImagen.repaint();
+        }
     }//GEN-LAST:event_btnImagenActionPerformed
 
     private void btnRegistrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseEntered
@@ -403,27 +467,98 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
         String descripcion = txtDescripcion.getText();
         String precio = txtPrecio.getText();
         Integer cantidad = (Integer) spCantidad.getValue();
+        byte[] imagen = bytesImagenSeleccionada;
+         
+        boolean nombreProducto = nombre.trim().isEmpty();
+        boolean descripcionProducto = descripcion.trim().isEmpty();
+        boolean precioProducto = precio.trim().isEmpty();
         
-        
-        
+        try {
+            if (nombreProducto || descripcionProducto || precioProducto) {
+                JOptionPane.showMessageDialog(this, "Los datos de nombre, descripción y precio no pueden quedar vacios para registrar un producto.");
+                return;  
+            }
+            
+            ProductoDTO productoTemporal = new ProductoDTO();
+            int filaSelecciona = tbProductos.getSelectedRow();
+            if (filaSelecciona != -1) {
+                String id = this.inventarioTabla.obtenerProductoAt(filaSelecciona).getId();
+                productoTemporal.setId(id);
+            }
+            
+            productoTemporal.setNombre(nombre);
+            productoTemporal.setDescripcion(descripcion);
+            productoTemporal.setPrecio(Double.parseDouble(precio));            
+            productoTemporal.setCantidadT(cantidad);
+            productoTemporal.setImagenP(imagen);
+            
+            listaTemporal.add(productoTemporal);
+            this.inventarioTabla.agregarFila(productoTemporal);
+            JOptionPane.showMessageDialog(this, "Producto añadido a la lista correctamente.");
+            limpiarCampos();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        llenarTabla();
-        limpiarCampos();
+        int filaSeleccionada = tbProductos.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para añadir stock de productos.");
+            return;
+        }
+        
+        int filaModelo = tbProductos.convertRowIndexToModel(filaSeleccionada);        
+        ProductoDTO productoSeleccionado = this.inventarioTabla.obtenerProductoAt(filaModelo);
+        
+        Integer nuevaCantidadProducto = (Integer) spCantidad.getValue();
+        
+        ProductoDTO nuevoValor = new ProductoDTO();
+        nuevoValor.setId(productoSeleccionado.getId());
+        nuevoValor.setCantidadT(nuevaCantidadProducto);
+        
+        try {
+            control.actualizarSumarProductoInventario(nuevoValor);
+            //control.actualizarProducto(productoSeleccionado);
+            this.inventarioTabla.fireTableRowsUpdated(filaModelo, filaModelo);
+            
+            JOptionPane.showMessageDialog(this, "Producto con nuevo stock actualizado correctamente.");
+            llenarTabla();
+            limpiarCampos();
+            tbProductos.clearSelection();
+        } catch (NegocioException ex) {
+            Logger.getLogger(InventarioProductosEntradaFORM.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        llenarTabla();
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {
+            if (listaTemporal.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No existen productos en fila para registrar. Agrege al menos 1 producto para comenzar registro de producto(s)");
+                return;
+            }
+            
+            control.nuevaEntradaProducto(listaTemporal);
+            JOptionPane.showMessageDialog(
+                    this, 
+                    "Producto(s) añadidos correctamente", 
+                    "REGISTRO EXITOSO",
+                    JOptionPane.INFORMATION_MESSAGE);
+            listaTemporal.clear();
+            llenarTabla();
+            limpiarCampos();
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }               
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnBuscarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseEntered
-        colorB.mouseEntered(evt);
-    }//GEN-LAST:event_btnBuscarMouseEntered
+    private void btnGuardarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseEntered
+        colorG.mouseEntered(evt);
+    }//GEN-LAST:event_btnGuardarMouseEntered
 
-    private void btnBuscarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseExited
-        colorB.mouseExited(evt);
-    }//GEN-LAST:event_btnBuscarMouseExited
+    private void btnGuardarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseExited
+        colorG.mouseExited(evt);
+    }//GEN-LAST:event_btnGuardarMouseExited
 
     private void btnActualizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseExited
         colorA.mouseExited(evt);
@@ -433,9 +568,22 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
         colorA.mouseEntered(evt);
     }//GEN-LAST:event_btnActualizarMouseEntered
 
+    private void btnBuscarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseEntered
+        colorB.mouseEntered(evt);
+    }//GEN-LAST:event_btnBuscarMouseEntered
+
+    private void btnBuscarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseExited
+        colorB.mouseExited(evt);
+    }//GEN-LAST:event_btnBuscarMouseExited
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnImagen;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnRegresar;
@@ -445,11 +593,11 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbImagen;
     private javax.swing.JSpinner spCantidad;
     private javax.swing.JTable tbProductos;
     private javax.swing.JTextField txtDescripcion;
@@ -459,4 +607,4 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 }
 
-//---
+//----------

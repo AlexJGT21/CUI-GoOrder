@@ -17,6 +17,8 @@ public interface IProductoBO {
     public abstract ProductoDTO eliminarProducto(ProductoDTO producto) throws NegocioException;
     public abstract List<ProductoDTO> obtenerProducto(String nombreProducto) throws NegocioException;
     public abstract List<ProductoDTO> listarProductos() throws NegocioException;
+    public abstract ProductoDTO obtenerProductoPorId(ProductoDTO producto) throws NegocioException;
+
     //-----------------------------------    
     public abstract List<ProductoDTO> buscarProducto(String nombreProducto) throws NegocioException;        
 }
