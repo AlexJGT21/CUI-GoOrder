@@ -498,7 +498,7 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Producto añadido a la lista correctamente.");
             limpiarCampos();
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: No se pueden añadir caracteres especiales al precio del producto.");
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
