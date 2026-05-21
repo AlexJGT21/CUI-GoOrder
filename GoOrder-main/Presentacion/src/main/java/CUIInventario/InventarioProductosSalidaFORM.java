@@ -22,6 +22,7 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
     private final ColorBoton colorA;
     private final ColorBoton colorB;
     private final ColorBoton colorR;
+    private final ColorBoton colorG;
     private final Control control;
     
     private final SpinnerNumberModel modeloSP;
@@ -46,8 +47,7 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
         colorA = new ColorBoton(btnActualizar);
         colorB = new ColorBoton(btnBuscar);
         colorR = new ColorBoton(btnRegresar);
-
-
+        colorG = new ColorBoton(btnGuardar);
         
         modeloSP = new SpinnerNumberModel(1, 1, 100, 1);
         spCantidad.setModel(modeloSP);
@@ -101,6 +101,7 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
         tbProductos = new javax.swing.JTable();
         btnRegresar = new BotonRedondeado();
         btnBuscar = new BotonRedondeado();
+        btnGuardar = new BotonRedondeado();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -196,27 +197,33 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
             }
         });
 
+        btnGuardar.setBackground(new java.awt.Color(35, 35, 35));
+        btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(0, 255, 150));
+        btnGuardar.setText("Añadir a la lista");
+        btnGuardar.setBorderPainted(false);
+        btnGuardar.setContentAreaFilled(false);
+        btnGuardar.setFocusPainted(false);
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseExited(evt);
+            }
+        });
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jSeparator1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +237,24 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel1)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnGuardar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -243,8 +267,9 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -277,36 +302,38 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        int filaSeleccionada = tbProductos.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para añadir stock de productos.");
-            return;
-        }
-        
-        int filaModelo = tbProductos.convertRowIndexToModel(filaSeleccionada);        
-        ProductoDTO productoSeleccionado = this.inventarioTabla.obtenerProductoAt(filaModelo);
-        
-        Integer nuevaCantidadProducto = (Integer) spCantidad.getValue();
-        
-        ProductoDTO productoSalida = new ProductoDTO();
-        productoSalida.setId(productoSeleccionado.getId());
-        productoSalida.setNombre(productoSeleccionado.getNombre());
-        productoSalida.setCantidadT(nuevaCantidadProducto);
-        
-        listaTemporal.clear();
-        listaTemporal.add(productoSalida);        
+        if (listaTemporal.isEmpty()) {
+            int filaSeleccionada = tbProductos.getSelectedRow();
+            if (filaSeleccionada == -1) {
+                JOptionPane.showMessageDialog(this, "Seleccione una fila para comenzar proceso de salida de producto(s).");
+                return;
+            }
+            
+            int filaModelo = tbProductos.convertRowIndexToModel(filaSeleccionada);
+            ProductoDTO productoSeleccionado = this.inventarioTabla.obtenerProductoAt(filaModelo);
+            Integer cantidadSalida = (Integer) spCantidad.getValue();
+            if (cantidadSalida > productoSeleccionado.getCantidadT()) {
+                JOptionPane.showMessageDialog(this, "No se ppuede realizar uan salida de producto mayor al stock actual.");
+                return;
+            }
+            
+            ProductoDTO productoSalida = new ProductoDTO();
+            productoSalida.setId(productoSeleccionado.getId());
+            productoSalida.setNombre(productoSeleccionado.getNombre());
+            productoSalida.setCantidadT(cantidadSalida);
+            
+            listaTemporal.add(productoSalida);          
+        }                    
         try {
             control.nuevaSalidaProducto(listaTemporal);
-            //control.actualizarProducto(productoSeleccionado);
-            this.inventarioTabla.fireTableRowsUpdated(filaModelo, filaModelo);
-            
-            JOptionPane.showMessageDialog(this, "Producto con nuevo stock actualizado correctamente.");
+            JOptionPane.showMessageDialog(this, "Salida de productos procesada correctamente.");
+            listaTemporal.clear();
             llenarTabla();
             limpiarCampos();
             tbProductos.clearSelection();
-        } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-        }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage());
+        }  
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnActualizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseExited
@@ -341,9 +368,55 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
         llenarTabla();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void btnGuardarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseEntered
+        colorG.mouseEntered(evt);
+    }//GEN-LAST:event_btnGuardarMouseEntered
+
+    private void btnGuardarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseExited
+        colorG.mouseExited(evt);
+    }//GEN-LAST:event_btnGuardarMouseExited
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        int filaSeleccionada = tbProductos.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione un producto(s), para iniciar proceso de salida de producto(s)");
+            return;
+        }
+        int filaModelo = tbProductos.convertRowIndexToModel(filaSeleccionada);
+        ProductoDTO productoSeleccionado = this.inventarioTabla.obtenerProductoAt(filaModelo);
+        
+        Integer cantidadSalida = (Integer) spCantidad.getValue();
+        
+        if (cantidadSalida > productoSeleccionado.getCantidadT()) {
+            JOptionPane.showMessageDialog(this, "No se puede registrar una salida mayor al stock actual.");
+            return;
+        }
+        
+        ProductoDTO productoSalida = new ProductoDTO();
+        productoSalida.setId(productoSeleccionado.getId());
+        productoSalida.setNombre(productoSeleccionado.getNombre());
+        productoSalida.setCantidadT(cantidadSalida);
+        
+        boolean existe = false;
+        for (ProductoDTO p: listaTemporal) {
+            if (p.getId().equals(productoSalida.getId())) {
+                p.setCantidadT(cantidadSalida);
+                existe = true;
+                break;
+            }
+        }
+        if (!existe) {
+            listaTemporal.add(productoSalida);
+        }
+        limpiarCampos();
+        tbProductos.clearSelection();
+        JOptionPane.showMessageDialog(this, "Producto añadido a la lista de salida correctamente.");
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
