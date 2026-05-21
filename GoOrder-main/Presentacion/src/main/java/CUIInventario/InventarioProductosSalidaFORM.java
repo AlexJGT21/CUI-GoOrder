@@ -69,6 +69,7 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
             } else {
                 this.inventarioTabla.actualizarDatos(resultados);                
             }
+            txtProducto.setText("");
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage());
         }

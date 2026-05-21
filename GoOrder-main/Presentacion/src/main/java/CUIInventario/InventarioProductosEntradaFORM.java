@@ -7,6 +7,7 @@ import GoOrderDTO.ProductoDTO;
 import ModelosTabla.InventarioProductosTabla;
 import Pattern.BotonRedondeado;
 import Pattern.ColorBoton;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -577,7 +578,28 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarMouseExited
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        String nombreProducto = txtProducto.getText();        
+        
+        boolean nombre = nombreProducto.trim().isEmpty();
+
+        try {
+            if (nombre) {
+                JOptionPane.showMessageDialog(this, "Ingrese un nombre para iniciar busqueda de producto.");
+                List<ProductoDTO> resultadosNoCoiciden = control.obtenerListaProductos();
+                this.inventarioTabla.actualizarDatos(resultadosNoCoiciden);
+                return;
+            }          
+            List<ProductoDTO> productosEncontrado = control.obtenerProducto(nombreProducto);
+            
+            if (productosEncontrado.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No existen productos con los caracteres o nombre ingresado.");                
+                return;
+            }
+            this.inventarioTabla.actualizarDatos(productosEncontrado);
+            txtProducto.setText("");
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

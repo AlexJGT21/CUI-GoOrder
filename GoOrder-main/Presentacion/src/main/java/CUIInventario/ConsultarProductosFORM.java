@@ -46,18 +46,20 @@ public class ConsultarProductosFORM extends javax.swing.JFrame {
     }
     
     private void llenarTabla() {
-        String nombre = txtProducto.getText();
+        String nombre = txtProducto.getText().trim();
         Integer cantidad = (Integer) spCantidad.getValue();
 
+        String nombreBusqueda = nombre.isEmpty() ? null : nombre;
+        
         try {
-            if (nombre == null) {
+            if (nombre.isEmpty() && cantidad == 0) {
                 List<ProductoDTO> listaProductos = control.obtenerListaProductos();
                 this.inventarioTabla.actualizarDatos(listaProductos);
                 return;
             }
-            List<ProductoDTO> resultados = control.listarProductosFiltros(nombre, cantidad); 
+            List<ProductoDTO> resultados = control.listarProductosFiltros(nombreBusqueda, cantidad); 
             this.inventarioTabla.actualizarDatos(resultados);
-
+            limpiarCampos();
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage());
         }
@@ -256,20 +258,10 @@ public class ConsultarProductosFORM extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         llenarTabla();
-        limpiarCampos();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProductoActionPerformed
-        String nombre = txtProducto.getText();
-        Integer cantidad = (Integer) spCantidad.getValue();
-        try {
-            List<ProductoDTO> listaResultados = control.listarProductosFiltros(nombre, cantidad);
-            if (listaResultados == null || listaResultados.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No se encontraron productos con los filtros ingresados.");
-                return;
-            }
-        } catch (NegocioException e) {
-        }        
+      
     }//GEN-LAST:event_txtProductoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

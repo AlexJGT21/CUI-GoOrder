@@ -64,7 +64,7 @@ public class InventarioMongoDAO implements IInventarioDAO, IBaseMongoDAO {
             if (cantidad != null) {
                 filtros.add(Filters.gte("cantidad", cantidad));
             }
-            Bson filtroFinal = filtros.isEmpty() ? new Document() : Filters.or(filtros);
+            Bson filtroFinal = filtros.isEmpty() ? new Document() : Filters.and(filtros);
             collection.find(filtroFinal).into(resultados);
             return resultados;
         } catch (MongoException e) {
