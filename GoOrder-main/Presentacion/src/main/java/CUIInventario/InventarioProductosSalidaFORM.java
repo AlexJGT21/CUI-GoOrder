@@ -325,12 +325,26 @@ public class InventarioProductosSalidaFORM extends javax.swing.JFrame {
             listaTemporal.add(productoSalida);          
         }                    
         try {
-            control.nuevaSalidaProducto(listaTemporal);
-            JOptionPane.showMessageDialog(this, "Salida de productos procesada correctamente.");
-            listaTemporal.clear();
-            llenarTabla();
-            limpiarCampos();
-            tbProductos.clearSelection();
+            StringBuilder productosSeleccionados = new StringBuilder(
+                    "¿Segudo desea procesar la salida de los siguientes productos?\n\n");
+            for (ProductoDTO p: listaTemporal) {
+                productosSeleccionados.append("-").append(p.getNombre()).append("\n");
+            }
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    productosSeleccionados.toString(),
+                    "CONFIRMACIÓN",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                control.nuevaSalidaProducto(listaTemporal);
+                JOptionPane.showMessageDialog(this, "Salida de productos procesada correctamente.");
+                listaTemporal.clear();
+                llenarTabla();
+                limpiarCampos();
+                tbProductos.clearSelection();
+            }
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage());
         }  

@@ -539,15 +539,26 @@ public class InventarioProductosEntradaFORM extends javax.swing.JFrame {
                 return;
             }
             
-            control.nuevaEntradaProducto(listaTemporal);
-            JOptionPane.showMessageDialog(
-                    this, 
-                    "Producto(s) añadidos correctamente", 
-                    "REGISTRO EXITOSO",
-                    JOptionPane.INFORMATION_MESSAGE);
-            listaTemporal.clear();
-            llenarTabla();
-            limpiarCampos();
+            StringBuilder productosPorAniadir = new StringBuilder("¿Seguro desea añadir los siguientes productos?\n\n");
+            for (ProductoDTO p: listaTemporal) {
+                productosPorAniadir.append("-").append(p.getNombre()).append("\n");
+            }            
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    productosPorAniadir.toString(),
+                    "CONFIRMACIÓN",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                control.nuevaEntradaProducto(listaTemporal);
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "Producto(s) añadidos correctamente", 
+                        "REGISTRO EXITOSO",
+                        JOptionPane.INFORMATION_MESSAGE);
+                listaTemporal.clear();
+                llenarTabla();
+                limpiarCampos();        
+            }
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }               
